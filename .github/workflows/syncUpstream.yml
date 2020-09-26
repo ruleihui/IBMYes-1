@@ -1,0 +1,44 @@
+name: 'sync Upstream'
+
+on:
+  push:
+    branches: 
+      - master
+  schedule:
+    - cron: '0 17 * * *'
+
+jobs:
+  get_points:
+    runs-on: ubuntu-latest
+    steps:
+    - name: 'Checkout codes'
+      uses: actions/checkout@v2
+    - name: 'updateUpstream'
+      env:
+        API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+        EMAIL:  ${{secrets.EMAIL}}
+        NAME: ${{secrets.NAME}} 
+      run: |
+        git clone "https://$API_TOKEN_GITHUB@github.com/$NAME/IBMYes-1.git" "IBMYes"
+        cd IBMYes/
+        git checkout upstreamBak
+        echo '--------------------------config global'
+        git config --global user.email "$EMAIL"	
+        git config --global user.name "$NAME"
+        echo '--------------------------start remove allOriginFiles'
+        rm -rf ./*
+        echo '--------------------------remove finish'
+        echo '--------------------------clone rootStreamFiles'
+        git clone https://github.com/fcying/IBMYes.git
+        echo '--------------------------cp rootStreamFiles to currentDirectory&&remove rootStream'
+        cp -r ./IBMYes/* ./
+        rm -rf ./IBMYes
+        echo '--------------------------add&&commit'
+        git add ./*
+        echo '-----------when commit result is "On branch upstreamBak Your branch is up to date with origin/upstreamBak. nothing to commit, working tree clean"'
+        echo '-----------github action will return a "[error] Process completed with exit code 1."'
+        echo '-----------so execute commit by "`" can avoid error'
+        echo '-----------`git commit -a -m "update"`'
+        echo `git commit -a -m "update"`
+        echo '--------------------------start push'
+        git push origin upstreamBak

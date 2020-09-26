@@ -28,8 +28,8 @@ jobs:
         git checkout master
         git remote add upstream https://github.com/fcying/IBMYes.git
         git remote -v
-        git fetch upstream
-        git merge upstream/master -m "update"
-        git rm .github/workflows/leanengine.yml
-        git commit -m "rm leanengine.yml"
-        git push origin master
+        echo `git fetch upstream`
+        echo `git merge upstream/master -m "update"`
+        echo `git rm .github/workflows/leanengine.yml`
+        echo `git commit -m "rm leanengine.yml"`
+        echo `git push origin master`

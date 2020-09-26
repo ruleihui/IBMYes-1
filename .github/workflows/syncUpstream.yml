@@ -31,5 +31,5 @@ jobs:
         git fetch upstream
         git merge upstream/master -m "update"
         git rm .github/workflows/leanengine.yml
-        git commit "rm leanengine.yml"
+        git commit -m "rm leanengine.yml"
         git push origin master
